@@ -1,103 +1,11 @@
 from PIL import Image
+from pac.ImageHandler import *
+from pac.ImageProcessor import *
 import datetime
 import os
 
-def menu():
-    handler = None
-    processor = None
-    from PIL import Image, ImageFilter, ImageDraw, ImageFont
-
-    class ImageProcessor:
-        def __init__(self, image):
-            self.image = image
-
-        def apply_filter(self):
-            if self.image:
-                self.image = self.image.filter(ImageFilter.EMBOSS)
-                print(f"Фильтр эмбосс применен")
-
-            else:
-                print("Нет изображения для обработки")
-
-        def add_watermark(self, text="Вариант 5"):
-            if self.image:
-                draw = ImageDraw.Draw(self.image)
-                font_size = max(20, min(self.image.size) // 20)
-                font = ImageFont.truetype("C:/Windows/Fonts/Arial.ttf", font_size)
-
-                text_width = draw.textlength(text, font=font)
-                text_height = font_size
-                position = (self.image.size[0] - text_width - 10, self.image.size[1] - text_height - 10)
-
-                watermark = Image.new("RGBA", self.image.size, (0, 0, 0, 0))
-                watermark_draw = ImageDraw.Draw(watermark)
-                watermark_draw.text(position, text, font=font, fill=(255, 255, 255, 128))
-                self.image = Image.alpha_composite(self.image.convert("RGBA"), watermark)
-                print(f"Водяной знак '{text}' добавлен в правый нижний угол.")
-            else:
-                print("Нет изображения для обработки")
-
-        def show_image(self):
-            if self.image:
-                self.image.show()
-            else:
-                print("Нет изображения для отображения")
-
-        def get_image(self):
-            return self.image
-
-    from PIL import Image
-    from datetime import datetime
-
-    class ImageHandler:
-        def __init__(self, image_path):
-            self.image_path = image_path
-            self.image = None
-
-        def load_image(self):
-            self.image = Image.open(self.image_path)
-            print(f"Изображение успешно загружено: {self.image_path}")
-
-        def save_image(self, output_path, format=None):
-            if self.image:
-                self.image.save(output_path, format=format)
-                print(f"Изображение сохранено как: {output_path}")
-            else:
-                print("Сначала загрузите изображение")
-
-        def resize_image(self, new_size):
-            if self.image:
-                self.image = self.image.resize(new_size)
-                print(f"Размер изображения изменен на: {new_size}")
-            else:
-                print("Сначала загрузите изображение")
-
-        def scale_image_50_percent(self):
-            if self.image:
-                original_size = self.image.size
-                new_size = (original_size[0] // 2, original_size[1] // 2)
-                self.image = self.image.resize(new_size)
-                print(f"Изображение масштабировано до 50%: новый размер {new_size}")
-            else:
-                print("Сначала загрузите изображение")
-
-        def save_image_with_date(self, output_path_prefix, format=None):
-            if self.image:
-                date_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-                output_path = f"{output_path_prefix}_{date_str}.jpg"
-                self.image.save(output_path, format=format)
-                print(f"Изображение сохранено как: {output_path}")
-            else:
-                print("Сначала загрузите изображение")
-
-        def get_image_for_processing(self):
-            if self.image:
-                return self.image.copy()
-            else:
-                print("Сначала загрузите изображение")
-                return None
     #меню
-    while True:
+while True:
         decor = "=" * 22
         print(f"{decor} Выберите пункт из меню {decor}")
         print("1. Загрузить изображение")
@@ -171,6 +79,3 @@ def menu():
         else:
             print("Неправильный выбор, попробуйте снова")
 
-
-if __name__ == "__main__":
-    menu()
