@@ -1,2 +1,2 @@
-from .handler import ImageHandler
-from .processor import ImageProcessor
+from .ImageProcessor import *
+from .ImageHandler import *
